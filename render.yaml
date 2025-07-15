@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: crous-checker
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python crous-check.py
+    envVars:
+      - key: EMAIL
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: SEND_TO
+        sync: false

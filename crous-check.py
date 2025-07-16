@@ -33,7 +33,7 @@ def add_log(message):
 # Email sending
 def send_email(url, ville):
     subject = f"Logement CROUS disponible a {ville}"
-    body = f"Vite ! Vérifie ici : {url}"
+    body = f"Vite ! Verifie ici : {url}"
     msg = f"Subject: {subject}\n\n{body}"
 
     try:

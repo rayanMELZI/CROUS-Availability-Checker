@@ -16,7 +16,7 @@ DESTINATAIRE = os.getenv("SEND_TO")
 PORT = int(os.environ.get("PORT", 5000))
 
 # URLs à vérifier
-URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.7718134_45.8082628_4.8983774_45.7073666"
+URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search"
 URL_VILLEURBANNE = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.8583622_45.7955875_4.9212614_45.7484524"
 
 # Logs (max 100 lignes)

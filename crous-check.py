@@ -16,6 +16,7 @@ DESTINATAIRE = os.getenv("SEND_TO")
 PORT = int(os.environ.get("PORT", 5000))
 
 # URLs à vérifier
+# URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search"
 URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.7718134_45.8082628_4.8983774_45.7073666"
 URL_VILLEURBANNE = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.8583622_45.7955875_4.9212614_45.7484524"
 
@@ -45,6 +46,22 @@ def send_email(url, ville):
     except Exception as e:
         add_log(f"❌ Erreur lors de l'envoi d'email : {e}")
 
+#telegram notification
+def send_telegram(message):
+    try:
+        token = os.getenv("TELEGRAM_TOKEN")
+        chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        payload = {
+            "chat_id": chat_id,
+            "text": message
+        }
+        requests.post(url, data=payload)
+        add_log("📲 Notification Telegram envoyée.")
+    except Exception as e:
+        add_log(f"⚠️ Erreur envoi Telegram : {e}")
+
+
 # Vérification d'une ville
 def check_disponibilite(url, ville):
     try:
@@ -54,6 +71,7 @@ def check_disponibilite(url, ville):
         else:
             add_log(f"✅ Logement(s) trouvé(s) à {ville} ! Envoi d'e-mail...")
             send_email(url, ville)
+            send_telegram(f"🚨 Logement dispo à {ville} ! Vérifie vite : {url}")
     except Exception as e:
         add_log(f"⚠️ Erreur lors de la vérification à {ville} : {e}")
 

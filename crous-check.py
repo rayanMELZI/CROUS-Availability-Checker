@@ -82,6 +82,13 @@ def bot_loop():
         check_disponibilite(URL_VILLEURBANNE, "Villeurbanne")
         time.sleep(300)  # 5 minutes
 
+def hourly_ping():
+    while True:
+        now = time.strftime('%Y-%m-%d %H:%M')
+        send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})")
+        time.sleep(3600)  # 1 heure
+
+
 # Flask web server
 app = Flask(__name__)
 
@@ -103,4 +110,5 @@ def index():
 # Lancement
 if __name__ == "__main__":
     threading.Thread(target=bot_loop, daemon=True).start()
+    threading.Thread(target=hourly_ping, daemon=True).start()
     app.run(host="0.0.0.0", port=PORT)

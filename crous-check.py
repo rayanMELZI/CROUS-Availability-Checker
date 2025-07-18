@@ -86,8 +86,7 @@ def hourly_ping():
     while True:
         now = time.strftime('%Y-%m-%d %H:%M')
         send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})")
-        # time.sleep(3600)  # 1 heure
-        time.sleep(10)  # 1 heure
+        time.sleep(3600)  # 1 heure
 
 
 # Flask web server

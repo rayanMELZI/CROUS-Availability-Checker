@@ -19,6 +19,7 @@ PORT = int(os.environ.get("PORT", 5000))
 # URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search"
 URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.7718134_45.8082628_4.8983774_45.7073666"
 URL_VILLEURBANNE = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.8583622_45.7955875_4.9212614_45.7484524"
+URL_PARIS = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=1.4462445_49.241431_3.5592208_48.1201456"
 
 # Logs (max 100 lignes)
 logs = []
@@ -47,10 +48,10 @@ def send_email(url, ville):
         add_log(f"❌ Erreur lors de l'envoi d'email : {e}")
 
 #telegram notification
-def send_telegram(message):
+def send_telegram(message, ville):
     try:
-        token = os.getenv("TELEGRAM_TOKEN")
-        chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        token = os.getenv(f"{ville}_TELEGRAM_TOKEN")
+        chat_id = os.getenv(f"{ville}_TELEGRAM_CHAT_ID")
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         payload = {
             "chat_id": chat_id,
@@ -80,6 +81,7 @@ def bot_loop():
     while True:
         check_disponibilite(URL_LYON, "Lyon")
         check_disponibilite(URL_VILLEURBANNE, "Villeurbanne")
+        check_disponibilite(URL_PARIS, "Paris")
         time.sleep(300)  # 5 minutes
 
 def hourly_ping():
@@ -106,6 +108,12 @@ def index():
     </body>
     </html>
     """
+
+@app.route("/webhook", methods=["POST"])
+def webhook():
+    data = request.json
+    print(data)  # Voir la structure
+    return "ok"
 
 # Lancement
 if __name__ == "__main__":

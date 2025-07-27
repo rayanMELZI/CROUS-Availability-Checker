@@ -6,6 +6,30 @@ import smtplib
 from flask import Flask
 from dotenv import load_dotenv
 
+from flask import request
+
+import json
+
+USERS_FILE = "users.json"
+
+def save_user(chat_id):
+    try:
+        if not os.path.exists(USERS_FILE):
+            with open(USERS_FILE, "w") as f:
+                json.dump([], f)
+
+        with open(USERS_FILE, "r") as f:
+            users = json.load(f)
+
+        if chat_id not in users:
+            users.append(chat_id)
+            with open(USERS_FILE, "w") as f:
+                json.dump(users, f)
+            add_log(f"👤 Nouvel utilisateur enregistré : {chat_id}")
+    except Exception as e:
+        add_log(f"❌ Erreur lors de l'enregistrement de l'utilisateur : {e}")
+
+
 # Load environment variables from .env
 load_dotenv()
 
@@ -63,6 +87,19 @@ def send_telegram(message, ville):
     except Exception as e:
         add_log(f"⚠️ Erreur envoi Telegram : {e}")
 
+def send_message(chat_id, message):
+    try:
+        token = os.getenv("LYON_TELEGRAM_TOKEN")  # on peut réutiliser n’importe lequel
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        payload = {
+            "chat_id": chat_id,
+            "text": message
+        }
+        requests.post(url, data=payload)
+    except Exception as e:
+        add_log(f"❌ Erreur envoi message /start : {e}")
+
+
 
 # Vérification d'une ville
 def check_disponibilite(url, ville):
@@ -111,11 +148,25 @@ def index():
     </html>
     """
 
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
-    print(data)  # Voir la structure
-    return "ok"
+    try:
+        if "message" in data:
+            message = data["message"]
+            text = message.get("text", "")
+            chat_id = message["chat"]["id"]
+
+            if text == "/start":
+                save_user(chat_id)
+                send_message(chat_id, "✅ Abonnement activé. Tu recevras les alertes automatiquement.")
+            else:
+                send_message(chat_id, "🤖 Envoie /start pour t'abonner aux alertes logement CROUS.")
+        return "ok"
+    except Exception as e:
+        add_log(f"❌ Erreur webhook: {e}")
+        return "error"
 
 # Lancement
 if __name__ == "__main__":

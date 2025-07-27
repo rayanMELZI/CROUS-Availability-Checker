@@ -47,10 +47,10 @@ def send_email(url, ville):
         add_log(f"❌ Erreur lors de l'envoi d'email : {e}")
 
 #telegram notification
-def send_telegram(message):
+def send_telegram(message, ville):
     try:
-        token = os.getenv("TELEGRAM_TOKEN")
-        chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        token = os.getenv(f"{ville}_TELEGRAM_TOKEN")
+        chat_id = os.getenv(f"{ville}_TELEGRAM_CHAT_ID")
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         payload = {
             "chat_id": chat_id,
@@ -106,6 +106,12 @@ def index():
     </body>
     </html>
     """
+
+@app.route("/webhook", methods=["POST"])
+def webhook():
+    data = request.json
+    print(data)  # Voir la structure
+    return "ok"
 
 # Lancement
 if __name__ == "__main__":

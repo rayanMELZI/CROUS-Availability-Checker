@@ -72,7 +72,8 @@ def check_disponibilite(url, ville):
             add_log(f"❌ Aucun logement à {ville}")
         else:
             add_log(f"✅ Logement(s) trouvé(s) à {ville} ! Envoi d'e-mail...")
-            send_email(url, ville)
+            if ville == "Villeurbanne" or ville == "Lyon":
+                send_email(url, ville)
             send_telegram(f"🚨 Logement dispo à {ville} ! Vérifie vite : {url}")
     except Exception as e:
         add_log(f"⚠️ Erreur lors de la vérification à {ville} : {e}")

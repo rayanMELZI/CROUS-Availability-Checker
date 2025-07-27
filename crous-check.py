@@ -19,7 +19,8 @@ PORT = int(os.environ.get("PORT", 5000))
 # URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search"
 URL_LYON = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.7718134_45.8082628_4.8983774_45.7073666"
 URL_VILLEURBANNE = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=4.8583622_45.7955875_4.9212614_45.7484524"
-URL_PARIS = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=1.4462445_49.241431_3.5592208_48.1201456"
+# URL_PARIS = "https://trouverunlogement.lescrous.fr/tools/41/search?bounds=1.4462445_49.241431_3.5592208_48.1201456"
+URL_PARIS = "https://trouverunlogement.lescrous.fr/tools/41/search"
 
 # Logs (max 100 lignes)
 logs = []

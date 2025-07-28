@@ -149,24 +149,24 @@ def index():
     """
 
 
-@app.route("/webhook", methods=["POST"])
-def webhook():
-    data = request.json
-    try:
-        if "message" in data:
-            message = data["message"]
-            text = message.get("text", "")
-            chat_id = message["chat"]["id"]
+# @app.route("/webhook", methods=["POST"])
+# def webhook():
+#     data = request.json
+#     try:
+#         if "message" in data:
+#             message = data["message"]
+#             text = message.get("text", "")
+#             chat_id = message["chat"]["id"]
 
-            if text == "/start":
-                save_user(chat_id)
-                send_message(chat_id, "✅ Abonnement activé. Tu recevras les alertes automatiquement.")
-            else:
-                send_message(chat_id, "🤖 Envoie /start pour t'abonner aux alertes logement CROUS.")
-        return "ok"
-    except Exception as e:
-        add_log(f"❌ Erreur webhook: {e}")
-        return "error"
+#             if text == "/start":
+#                 save_user(chat_id)
+#                 send_message(chat_id, "✅ Abonnement activé. Tu recevras les alertes automatiquement.")
+#             else:
+#                 send_message(chat_id, "🤖 Envoie /start pour t'abonner aux alertes logement CROUS.")
+#         return "ok"
+#     except Exception as e:
+#         add_log(f"❌ Erreur webhook: {e}")
+#         return "error"
 
 # Lancement
 if __name__ == "__main__":

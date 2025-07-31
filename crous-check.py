@@ -126,7 +126,9 @@ def bot_loop():
 def hourly_ping():
     while True:
         now = time.strftime('%Y-%m-%d %H:%M')
-        send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})")
+        send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})", "Lyon")
+        send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})", "Villeurbanne")
+        send_telegram(f"🟢 Le bot CROUS tourne toujours ({now})", "Paris")
         time.sleep(3600)  # 1 heure
 
 
